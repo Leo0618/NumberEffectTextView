@@ -27,6 +27,8 @@ public class NumberEffectTextView extends TextView {
     private boolean mIntercept = false;
     /** 是否支持小数 默认支持 */
     private boolean mEnableDecimal = true;
+    /** 小数位数是否为两位 默认是的 */
+    private boolean mDecimal2Bit = true;
 
     public NumberEffectTextView(Context context) {
         super(context);
@@ -61,6 +63,7 @@ public class NumberEffectTextView extends TextView {
         try {
             mNumberInt = Integer.parseInt(numbers[0]);
             mNumberDecimal = Integer.parseInt(numbers[1]);
+            mDecimal2Bit = numbers[1].startsWith("0");
         } catch (Exception e) {
             mIntercept = true;
             setText(numberStrIn);
@@ -134,7 +137,11 @@ public class NumberEffectTextView extends TextView {
                                 int numberDecimal = Integer.parseInt(animation.getAnimatedValue().toString());
                                 String numberDecimalStr = String.valueOf(numberDecimal);
                                 if (numberDecimalStr.length() < 2) {
-                                    numberDecimalStr = numberDecimalStr + "0";
+									if (mDecimal2Bit) {
+                                        numberDecimalStr = "0" + numberDecimalStr;
+                                    } else {
+                                        numberDecimalStr = numberDecimalStr + "0";
+                                    }
                                 }
                                 setText(String.valueOf(numberIntStr) + "." + numberDecimalStr);
                             }
